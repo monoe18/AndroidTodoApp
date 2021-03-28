@@ -6,4 +6,5 @@
     values-round/strings.xml for round devices.
     -->
     <string name="hello_world">Hello Square World!</string>
+    <string name="string_hvad_skal_der_g_res">"Hvad skal der gøres? "</string>
 </resources>
