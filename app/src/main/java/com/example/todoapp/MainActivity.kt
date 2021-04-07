@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 
@@ -13,14 +12,15 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        var todoList = arrayListOf<ItemTodo>(
-            ItemTodo("Clean desk", false),
-            ItemTodo("Go Shopping", true),
-            ItemTodo("Cook Dinner", true)
+        var lists = arrayListOf<ListTodo>(
+            ListTodo(1, "titel 1"),
+            ListTodo(2, "titel 2"),
+            ListTodo(3, "titel 3"),
+            ListTodo(4, "titel 4")
         )
 
-        val adapter = ListDisplayAdapter(todoList)
-        var recyclerView = findViewById<RecyclerView>(R.id.recyclerTodo)
+        val adapter = ListCollectionAdapter(lists, this)
+        var recyclerView = findViewById<RecyclerView>(R.id.recyclerList)
         recyclerView.setHasFixedSize(true)
         var layoutManager = LinearLayoutManager(this)
         recyclerView.layoutManager = layoutManager
