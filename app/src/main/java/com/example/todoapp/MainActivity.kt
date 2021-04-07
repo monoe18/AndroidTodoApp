@@ -1,17 +1,13 @@
 package com.example.todoapp
 
 import android.content.Intent
-import android.os.Build.ID
 import android.os.Bundle
 import android.view.View
-import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
-import com.example.todoapp.Database.*
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.example.todoapp.Database.ToDoDatabase
 
 
 class MainActivity : AppCompatActivity() {
@@ -40,7 +36,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun newTodoNote(view: View) {
-        val intent = Intent(this, ListEditor::class.java).apply {}
-        startActivity(intent)
+        dialogSetup()
+    }
+
+    fun dialogSetup(){
+        AlertDialog.Builder(this)
+            .setTitle("Todo Type")
+            .setMessage("Would you like to make a note or a list?")
+            // Specifying a listener allows you to take an action before dismissing the dialog.
+            // The dialog is automatically dismissed when a dialog button is clicked.
+            .setPositiveButton("List") { dialog, which ->
+                // Continue with delete operation
+                val intent = Intent(this, ListEditor::class.java).apply {}
+                startActivity(intent)
+            } // A null listener allows the button to dismiss the dialog and take no further action.
+            .setNegativeButton("Note"){ dialog, which ->
+                // Continue with delete operation
+                val intent = Intent(this, NoteEditor::class.java).apply {}
+                startActivity(intent)
+            }
+            .show()
     }
 }
