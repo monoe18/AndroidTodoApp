@@ -28,7 +28,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun newTodoNote(view: View) {
-        val intent = Intent(this, NewToDoNote::class.java).apply {}
+        val intent = Intent(this, NewListNote::class.java).apply {}
         startActivity(intent)
     }
 }
