@@ -12,7 +12,6 @@ class ListDisplayAdapter(private val dataSet: ArrayList<ItemTodo>) : RecyclerVie
     inner class ViewHolder(item : View): RecyclerView.ViewHolder(item){
         val textView: TextView = item.findViewById<TextView>(R.id.listTitle)
         val checkBox : CheckBox = item.findViewById<CheckBox>(R.id.checkBox)
-
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListDisplayAdapter.ViewHolder {
