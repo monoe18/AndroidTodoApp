@@ -1,5 +1,6 @@
 package com.example.todoapp.Database
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.ForeignKey.CASCADE
@@ -22,5 +23,10 @@ data class ToDoItem(
     val done: Boolean,
     val description: String,
     val list: Int
+)
 
+data class ToDoItemTuple(
+    @ColumnInfo(name = "id") val id: Int?,
+    @ColumnInfo(name = "done") val done: Boolean?,
+    @ColumnInfo(name = "description") val description: String?
 )

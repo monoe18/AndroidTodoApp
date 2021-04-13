@@ -11,9 +11,9 @@ class ListEditor : AppCompatActivity() {
 
 
     var todoList = arrayListOf<ItemTodo>(
-        ItemTodo("Clean desk", false),
-        ItemTodo("Go Shopping", true),
-        ItemTodo("Cook Dinner", true)
+        ItemTodo(0,"Clean desk", false),
+        ItemTodo(1,"Go Shopping", true),
+        ItemTodo(2,"Cook Dinner", true)
     )
 
     val adapter = ListDisplayAdapter(todoList)
@@ -31,7 +31,7 @@ class ListEditor : AppCompatActivity() {
 
     fun insertItem(view: View) {
         var editTextField = findViewById<EditText>(R.id.textToAdd)
-        val newItem = ItemTodo(editTextField.text.toString(), false)
+        val newItem = ItemTodo(0, editTextField.text.toString(), false)
         todoList.add(newItem)
         editTextField.text.clear();
 

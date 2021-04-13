@@ -18,4 +18,8 @@ import androidx.room.Update
 
         @Query("SELECT COUNT(*) from toDoList")
         fun countToDoList(): Int
+
+        @Query("SELECT * from todoList")
+        fun getListInfo(): List<ListInfoTuple>;
     }
+

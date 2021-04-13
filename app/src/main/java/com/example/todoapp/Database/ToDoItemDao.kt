@@ -16,6 +16,9 @@ interface ToDoItemDao {
     @Insert
     fun insert(toDoItem: ToDoItem?)
 
-    @Query("SELECT COUNT(*) from toDoItem")
+    @Query("SELECT COUNT(*) FROM toDoItem")
     fun countToDoItem(): Int
+
+    @Query("SELECT * FROM toDoItem WHERE :list_id = list")
+    fun getItemsFromList(list_id: Int?) : List<ToDoItemTuple>;
 }

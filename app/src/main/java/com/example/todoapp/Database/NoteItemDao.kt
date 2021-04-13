@@ -18,4 +18,7 @@ interface NoteItemDao {
 
     @Query("SELECT COUNT(*) from noteItem")
     fun countNoteItem(): Int
+
+    @Query("SELECT * FROM noteItem WHERE :list_id = list")
+    fun getNoteFromList(list_id: Int?) : NoteItem?;
 }

@@ -23,6 +23,6 @@ class ListDisplayAdapter(private val dataSet: ArrayList<ItemTodo>) : RecyclerVie
 
     override fun onBindViewHolder(holder: ListDisplayAdapter.ViewHolder, position: Int) {
         holder.textView.text = dataSet[position].title;
-        holder.checkBox.isChecked = dataSet[position].done
+        holder.checkBox.isChecked = dataSet[position].done!!;
     }
 }

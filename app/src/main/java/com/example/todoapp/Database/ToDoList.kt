@@ -1,5 +1,6 @@
 package com.example.todoapp.Database
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import java.util.*
@@ -12,4 +13,10 @@ import java.util.*
             val title: String,
             val type: String,
             val priority: String
+    )
+
+    data class ListInfoTuple(
+        @ColumnInfo(name = "id") val id: Int?,
+        @ColumnInfo(name = "type") val type: String?,
+        @ColumnInfo(name = "title") val title: String?
     )
