@@ -47,7 +47,7 @@ class ListEditor : AppCompatActivity() {
         recyclerView.adapter = adapter
         db = ToDoDatabase.getAppDatabase(this)!!
 
-        currentList = ToDoList(0, "kongen", "List", "hej")
+        currentList = ToDoList(0, "Title", "List", "Low")
 
         newID =  db.toDoListDao().insert(currentList)
 

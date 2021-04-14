@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.StaggeredGridLayoutManager
 import com.example.todoapp.Database.ToDoDatabase
 import com.example.todoapp.Database.ToDoItem
 import com.example.todoapp.Database.ToDoList
@@ -64,7 +65,7 @@ class MainActivity : AppCompatActivity() {
         val adapter = ListCollectionAdapter(final_lists, this)
         var recyclerView = findViewById<RecyclerView>(R.id.recyclerList)
         recyclerView.setHasFixedSize(true)
-        var layoutManager = GridLayoutManager(this, 2)
+        var layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
     }

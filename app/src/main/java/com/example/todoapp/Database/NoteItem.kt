@@ -6,26 +6,6 @@ import androidx.room.PrimaryKey
 import javax.security.auth.DestroyFailedException
 
 @Entity(tableName = "noteItem",
-    foreignKeys = [ForeignKey(
-        entity = ToDoList::class,
-        parentColumns = arrayOf("id"),
-        childColumns = arrayOf("list"),
-        onDelete = ForeignKey.CASCADE,
-        onUpdate = ForeignKey.CASCADE
-    )]
-)
-data class NoteItem(
-    @PrimaryKey var id: String,
-    var description: String,
-    var deadline: String,
-    var list: Int
-){
-    constructor(id: String, description: String, deadline: String) : this(id, description, deadline, 0)
-}
-
-
-/**
-@Entity(tableName = "noteItem",
     foreignKeys = arrayOf(
         ForeignKey(
             entity = ToDoList::class,
@@ -35,12 +15,11 @@ data class NoteItem(
         )
     )
 )
+
 data class NoteItem(
-    @PrimaryKey
-    val id: Int,
+    @PrimaryKey (autoGenerate = true)
+    val id: Int = 0,
     val description: String,
     val deadline: String,
     val list: Int
-
 )
-*/

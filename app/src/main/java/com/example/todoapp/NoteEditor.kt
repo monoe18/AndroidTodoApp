@@ -1,6 +1,5 @@
 package com.example.todoapp
 
-import `in`.dd4you.appsconfig.DD4YouConfig
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.graphics.drawable.ColorDrawable
@@ -23,14 +22,12 @@ class NoteEditor : AppCompatActivity() {
     protected lateinit var addNoteBtn: Button
     protected var Deadline: TextView ?= null
     protected var DeadlineDateListener: OnDateSetListener ?= null
-    protected lateinit var uniqueID: DD4YouConfig
     //protected var uniqueID: String = UUID.randomUUID().toString()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note_editor)
 
-        uniqueID = DD4YouConfig(this)
 
         db = ToDoDatabase.getAppDatabase(this)!!
         Title = findViewById<EditText>(R.id.editText)
@@ -71,10 +68,8 @@ class NoteEditor : AppCompatActivity() {
                 //val noteItem = NoteItem(id = 420, description = descriptionInput, deadline = deadlineInput,list = 69)
 
                 val doToList = ToDoList(title = titleInput, type = "Note", priority = radioBtnInput)
-                val noteItem = NoteItem(id = uniqueID.generateUniqueID(4), description = descriptionInput, deadline = deadlineInput)
-
-
-                db.toDoListDao().insert(doToList)
+                var newID = db.toDoListDao().insert(doToList)
+                val noteItem = NoteItem(description = descriptionInput, deadline = deadlineInput, list = newID.toInt())
                 db.noteItemDao().insert(noteItem)
                 //Log.i(db.toDoListDao().toDoList)
 

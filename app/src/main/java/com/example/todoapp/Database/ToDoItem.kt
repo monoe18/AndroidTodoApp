@@ -18,24 +18,6 @@ import androidx.room.PrimaryKey
     )
 )
 data class ToDoItem(
-    @PrimaryKey(autoGenerate = true) val id: Int,
-    val done: Boolean,
-    val description: String,
-    val list: Int
-)
-
-/**
-@Entity(tableName = "toDoItem",
-    foreignKeys = arrayOf(
-        ForeignKey(
-            entity = ToDoList::class,
-            parentColumns = arrayOf("id"),
-            childColumns = arrayOf("list"),
-            onDelete = ForeignKey.CASCADE
-        )
-    )
-)
-data class ToDoItem(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
     val done: Boolean,
@@ -48,4 +30,3 @@ data class ToDoItemTuple(
     @ColumnInfo(name = "done") val done: Boolean?,
     @ColumnInfo(name = "description") val description: String?
 )
-*/
