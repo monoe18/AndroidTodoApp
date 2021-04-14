@@ -14,7 +14,8 @@ import androidx.room.Update
         fun update(toDoList: ToDoList?): Int
 
         @Insert
-        fun insert(toDoList: ToDoList?)
+        fun insert(toDoList: ToDoList?): Long
+
 
         @Query("SELECT COUNT(*) from toDoList")
         fun countToDoList(): Int

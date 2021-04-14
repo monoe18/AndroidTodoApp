@@ -19,7 +19,7 @@ import androidx.room.PrimaryKey
 )
 data class ToDoItem(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
+    val id: Int = 0,
     val done: Boolean,
     val description: String,
     val list: Int

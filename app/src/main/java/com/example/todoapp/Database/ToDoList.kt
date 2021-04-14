@@ -8,8 +8,8 @@ import java.util.*
 
     @Entity(tableName = "toDoList")
     data class ToDoList(
-            @PrimaryKey
-            val id: Int,
+            @PrimaryKey(autoGenerate = true)
+            val id: Int = 0,
             val title: String,
             val type: String,
             val priority: String
