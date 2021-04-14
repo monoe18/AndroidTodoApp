@@ -3,8 +3,28 @@ package com.example.todoapp.Database
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import javax.security.auth.DestroyFailedException
+
+@Entity(tableName = "noteItem",
+    foreignKeys = [ForeignKey(
+        entity = ToDoList::class,
+        parentColumns = arrayOf("id"),
+        childColumns = arrayOf("list"),
+        onDelete = ForeignKey.CASCADE,
+        onUpdate = ForeignKey.CASCADE
+    )]
+)
+data class NoteItem(
+    @PrimaryKey var id: String,
+    var description: String,
+    var deadline: String,
+    var list: Int
+){
+    constructor(id: String, description: String, deadline: String) : this(id, description, deadline, 0)
+}
 
 
+/**
 @Entity(tableName = "noteItem",
     foreignKeys = arrayOf(
         ForeignKey(
@@ -16,10 +36,11 @@ import androidx.room.PrimaryKey
     )
 )
 data class NoteItem(
-    @PrimaryKey(autoGenerate = true)
+    @PrimaryKey
     val id: Int,
     val description: String,
     val deadline: String,
     val list: Int
 
 )
+*/
