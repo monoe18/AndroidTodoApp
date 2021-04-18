@@ -51,15 +51,17 @@ class ListEditor : AppCompatActivity() {
 
         newID =  db.toDoListDao().insert(currentList)
 
+
         Log.i(null, "ID" + newID)
     }
 
     fun insertItem(view: View) {
         var editTextField = findViewById<EditText>(R.id.textToAdd)
         val newItem = ItemTodo(editTextField.text.toString(), false)
+        var editTitleField = findViewById<EditText>(R.id.titleToAdd)
         todoList.add(newItem)
 
-        db.toDoItemDao().insert(ToDoItem(0, false, editTextField.text.toString(), newID.toInt() ))
+        db.toDoItemDao().insert(ToDoItem(0, editTitleField.text.toString(), false , editTextField.text.toString(), newID.toInt() ))
 
         editTextField.text.clear();
 
