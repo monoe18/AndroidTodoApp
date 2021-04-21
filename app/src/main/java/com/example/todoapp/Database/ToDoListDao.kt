@@ -19,4 +19,7 @@ import androidx.room.Update
 
         @Query("SELECT COUNT(*) from toDoList")
         fun countToDoList(): Int
+
+        @Query("SELECT * FROM toDoList WHERE :list_id = id")
+        fun listFromID(list_id: Int?): ToDoList?
     }

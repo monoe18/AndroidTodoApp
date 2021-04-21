@@ -46,10 +46,29 @@ class ListEditor : AppCompatActivity() {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
         db = ToDoDatabase.getAppDatabase(this)!!
+        var bundle: Bundle? = intent.extras
+        if (bundle != null) {
+            if (bundle.getInt("id") != null) {
+                var newList: ToDoList? = db.toDoListDao().listFromID(bundle.getInt("id"))
+                if (newList != null) {
+                    var list_items = db.toDoItemDao().getItemsFromList(new_id.toInt());
+                    var todo_items: ArrayList<ItemTodo> = arrayListOf();
+                    for(list_item in list_items){
+                        todo_items.add(ItemTodo(list_item.id, list_item.description, list_item.done))
+                    }
+                    findViewById<EditText>(R.id.titleToAdd).setText(newList.title)
+                    newID = newList.id.toLong()
+                }
 
-        currentList = ToDoList(0, "kongen", "List", "hej")
+            } else {
+                currentList = ToDoList(0, "kongen", "List", "hej")
+                newID =  db.toDoListDao().insert(currentList)
 
-        newID =  db.toDoListDao().insert(currentList)
+
+            }
+
+
+        }
 
 
         Log.i(null, "ID" + newID)
@@ -62,7 +81,11 @@ class ListEditor : AppCompatActivity() {
         todoList.add(newItem)
 
         db.toDoItemDao().insert(ToDoItem(0, editTitleField.text.toString(), false , editTextField.text.toString(), newID.toInt() ))
-
+        var newTitleList: ToDoList? = db.toDoListDao().listFromID(newID.toInt())
+        if (newTitleList != null) {
+            newTitleList.title = editTitleField.text.toString()
+            db.toDoListDao().update(newTitleList)
+        }
         editTextField.text.clear();
 
         adapter.notifyDataSetChanged()
