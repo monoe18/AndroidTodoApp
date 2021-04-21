@@ -19,5 +19,6 @@
     <string name="priority_medium">Medium</string>
     <string name="priority_low">Low</string>
     <string name="add_new_note">Add New Note</string>
+    <string name="cancel_note">Cancel</string>
     <!--<string name="textview">TextView</string> -->
 </resources>

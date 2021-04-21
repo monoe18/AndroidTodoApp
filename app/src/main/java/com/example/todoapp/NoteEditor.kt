@@ -2,6 +2,7 @@ package com.example.todoapp
 
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
+import android.content.Intent
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
@@ -12,6 +13,7 @@ import com.example.todoapp.Database.ToDoDatabase
 import com.example.todoapp.Database.ToDoList
 import java.util.*
 
+
 class NoteEditor : AppCompatActivity() {
 
     protected lateinit var db: ToDoDatabase
@@ -20,6 +22,7 @@ class NoteEditor : AppCompatActivity() {
     protected lateinit var RadioGroup: RadioGroup
     protected lateinit var Priority_RadioBtn: RadioButton
     protected lateinit var addNoteBtn: Button
+    protected lateinit var cancelBtn: Button
     protected var Deadline: TextView ?= null
     protected var DeadlineDateListener: OnDateSetListener ?= null
     //protected var uniqueID: String = UUID.randomUUID().toString()
@@ -28,13 +31,13 @@ class NoteEditor : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_note_editor)
 
-
         db = ToDoDatabase.getAppDatabase(this)!!
         Title = findViewById<EditText>(R.id.editText)
         Description = findViewById<EditText>(R.id.editText3)
         Deadline = findViewById<TextView>(R.id.editText2)
         RadioGroup = findViewById(R.id.radioGroup)
         addNoteBtn = findViewById<Button>(R.id.button)
+        cancelBtn = findViewById<Button>(R.id.button3)
 
         Deadline!!.setOnClickListener{
             val calendar = Calendar.getInstance()
@@ -78,6 +81,13 @@ class NoteEditor : AppCompatActivity() {
 
             }
             //result.setText(db.toDoListDao().toString() + " + " + db.toDoItemDao().toString())
+            val i = Intent(applicationContext, MainActivity::class.java)
+            startActivity(i)
+        }
+
+        cancelBtn.setOnClickListener(){
+            val i = Intent(applicationContext, MainActivity::class.java)
+            startActivity(i)
         }
     }
 }
