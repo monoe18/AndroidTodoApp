@@ -22,5 +22,8 @@ import androidx.room.Update
 
         @Query("SELECT * from todoList")
         fun getListInfo(): List<ListInfoTuple>;
+
+        @Query("SELECT * FROM toDoList WHERE :list_id = id")
+        fun listFromID(list_id: Int?): ToDoList?
     }
 

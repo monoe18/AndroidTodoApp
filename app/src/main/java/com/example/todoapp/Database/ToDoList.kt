@@ -8,7 +8,7 @@ import java.util.*
     data class ToDoList(
             @PrimaryKey(autoGenerate = true)
             val id: Int = 0,
-            val title: String,
+            var title: String,
             val type: String,
             val priority: String
     )
