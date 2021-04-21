@@ -23,13 +23,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         db = ToDoDatabase.getAppDatabase(this)!!
 
-        /*var lists = arrayListOf<ListTodo>(
-            ListTodo(1, "titel 1"),
-            ListTodo(2, "titel 2"),
-            ListTodo(3, "titel 3"),
-            ListTodo(4, "titel 4")
-        )*/
-
         Log.i(null, "starting db calls");
 
         var todo_lists = db.toDoListDao().getListInfo();
