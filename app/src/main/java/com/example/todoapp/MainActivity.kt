@@ -76,7 +76,7 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("List") { dialog, which ->
                 // Continue with delete operation
                 val intent = Intent(this, ListEditor::class.java).apply {}
-                intent.putExtra("id", 72)
+                intent.putExtra("id", 1)
                 startActivity(intent)
 
             } // A null listener allows the button to dismiss the dialog and take no further action.
