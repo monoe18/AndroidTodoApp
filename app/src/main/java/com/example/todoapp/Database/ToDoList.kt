@@ -9,8 +9,8 @@ import java.util.*
             @PrimaryKey(autoGenerate = true)
             val id: Int = 0,
             var title: String,
-            val type: String,
-            val priority: String
+            var type: String,
+            var priority: String
     )
 
     data class ListInfoTuple(

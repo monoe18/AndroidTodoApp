@@ -1,5 +1,6 @@
 package com.example.todoapp
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,41 +8,69 @@ import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+interface OnItemClickListener {
+    fun onItemClick(listPressedID: Int?, listPressedType: String?)
+}
+class ListCollectionAdapter(
+    private val dataSet: ArrayList<ListTodo>,
+    private val context : AppCompatActivity,
+    private val listener: OnItemClickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-class ListCollectionAdapter(private val dataSet: ArrayList<ListTodo>, private val context : AppCompatActivity) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-
-    inner class ListViewHolder(item : View): RecyclerView.ViewHolder(item){
+    inner class ListViewHolder(item : View): RecyclerView.ViewHolder(item), View.OnClickListener{
         val textView: TextView = item.findViewById<TextView>(R.id.TodoListTitle)
         val recyclerView: RecyclerView = item.findViewById<RecyclerView>(R.id.recyclerTodo)
+        init{
+            itemView.setOnClickListener(this);
+        }
+
+        override fun onClick(v: View?) {
+            var listPressedID : Int? = dataSet[adapterPosition].ID
+            var listPressedType : String? = dataSet[adapterPosition].type
+            if(adapterPosition!= RecyclerView.NO_POSITION) {
+                listener.onItemClick(listPressedID, listPressedType)
+            }
+        }
     }
 
-    inner class NoteViewHolder(item: View): RecyclerView.ViewHolder(item){
+    inner class NoteViewHolder(item: View): RecyclerView.ViewHolder(item), View.OnClickListener{
         val note_Title: TextView = item.findViewById<TextView>(R.id.noteTitle)
         val note_Description: TextView = item.findViewById<TextView>(R.id.noteDescription)
+        init{
+            itemView.setOnClickListener(this);
+        }
+
+        override fun onClick(v: View?) {
+            var listPressedID : Int? = dataSet[adapterPosition].ID
+            var listPressedType : String? = dataSet[adapterPosition].type
+            if(adapterPosition!= RecyclerView.NO_POSITION) {
+                listener.onItemClick(listPressedID, listPressedType)
+            }
+        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if (viewType == 1){
+        return if (viewType == 1){
             val view = LayoutInflater.from(parent.context).inflate(R.layout.todo_note_display_viewholder, parent, false)
-            return NoteViewHolder(view);
+            NoteViewHolder(view);
         } else {
             val view = LayoutInflater.from(parent.context).inflate(R.layout.todo_list_display_viewholder, parent, false)
-            return ListViewHolder(view);
+            ListViewHolder(view);
         }
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (dataSet[position].equals("Note")){
-            return 1;
+        return if (dataSet[position].listType.equals("Note")){
+            1;
         } else {
-            return 2;
+            2;
         }
     }
 
     override fun getItemCount(): Int = dataSet.size
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+
         if(holder.itemViewType == 1){
             var holder_note = holder as NoteViewHolder
             holder_note.note_Title.text = dataSet[position].title

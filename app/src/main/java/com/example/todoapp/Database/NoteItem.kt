@@ -19,7 +19,7 @@ import javax.security.auth.DestroyFailedException
 data class NoteItem(
     @PrimaryKey (autoGenerate = true)
     val id: Int = 0,
-    val description: String,
-    val deadline: String,
-    val list: Int
+    var description: String,
+    var deadline: String,
+    var list: Int
 )

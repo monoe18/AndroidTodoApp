@@ -15,8 +15,9 @@ import com.example.todoapp.Database.ToDoItem
 import com.example.todoapp.Database.ToDoList
 
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), OnItemClickListener {
     protected lateinit var db: ToDoDatabase
+    protected lateinit var adapter : ListCollectionAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,6 +28,7 @@ class MainActivity : AppCompatActivity() {
 
         var todo_lists = db.toDoListDao().getListInfo();
         var final_lists: ArrayList<ListTodo> = arrayListOf();
+
         for (list_tuple in todo_lists) {
             if(list_tuple.type == "List") {
                 var list_items = db.toDoItemDao().getItemsFromList(list_tuple.id);
@@ -45,22 +47,23 @@ class MainActivity : AppCompatActivity() {
 
         Log.i(null, "ending db calls");
 
-        if(final_lists.isEmpty()){
-            Log.i(null,"final list empty");
-        }
-
         for (list_to_print in  final_lists){
             Log.i(null,"list: " + list_to_print.listTitle +", "+ list_to_print.listType +", "+ list_to_print.ID);
             for(item_ in list_to_print.todoItems){
                 Log.i(null,"item: " + item_.title +", "+ item_.done +", "+ item_.id);
             }
         }
-        val adapter = ListCollectionAdapter(final_lists, this)
+        adapter = ListCollectionAdapter(final_lists, this, this)
         var recyclerView = findViewById<RecyclerView>(R.id.recyclerList)
         recyclerView.setHasFixedSize(true)
         var layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
+    }
+    
+    override fun onResume() {
+        adapter.notifyDataSetChanged();
+        super.onResume()
     }
 
     fun newTodoNote(view: View) {
@@ -76,7 +79,6 @@ class MainActivity : AppCompatActivity() {
             .setPositiveButton("List") { dialog, which ->
                 // Continue with delete operation
                 val intent = Intent(this, ListEditor::class.java).apply {}
-                intent.putExtra("id", 1)
                 startActivity(intent)
 
             } // A null listener allows the button to dismiss the dialog and take no further action.
@@ -86,5 +88,21 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
             .show()
+    }
+
+    override fun onItemClick(listPressedID: Int?, listPressedType: String?) {
+        Log.i(null, listPressedID.toString());
+        if (listPressedType != null) {
+            Log.i(null, listPressedType)
+        }
+        if(listPressedType == "List"){
+            val intent = Intent(this, ListEditor::class.java).apply {}
+            intent.putExtra("id", listPressedID)
+            startActivity(intent)
+        } else if(listPressedType == "Note"){
+            val intent = Intent(this, NoteEditor::class.java).apply {}
+            intent.putExtra("id", listPressedID)
+            startActivity(intent)
+        }
     }
 }

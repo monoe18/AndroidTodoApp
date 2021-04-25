@@ -38,6 +38,25 @@ class NoteEditor : AppCompatActivity() {
         RadioGroup = findViewById(R.id.radioGroup)
         addNoteBtn = findViewById<Button>(R.id.button)
         cancelBtn = findViewById<Button>(R.id.button3)
+        var newID: Long = 0
+        var newList: ToDoList? = ToDoList(0, "", "","")
+        var newNote: NoteItem? = NoteItem(0, "", "",0)
+
+        var bundle: Bundle? = intent.extras
+        if (bundle != null) {
+            if (bundle.getInt("id") != null) {
+                 newList = db.toDoListDao().listFromID(bundle.getInt("id"))
+                if (newList != null) {
+                    Title.setText(newList.title);
+                    newID = newList.id.toLong()
+                    newNote = db.noteItemDao().getNoteFromList(newID.toInt())
+                    if(newNote!= null){
+                        Description.setText(newNote.description)
+                        Deadline!!.text = newNote.deadline
+                    }
+                }
+            }
+        }
 
         Deadline!!.setOnClickListener{
             val calendar = Calendar.getInstance()
@@ -67,13 +86,24 @@ class NoteEditor : AppCompatActivity() {
             var deadlineInput: String = Deadline!!.text.toString()
 
             if(!titleInput.isEmpty() && !descriptionInput.isEmpty() && Priority_RadioBtn != null){
-                //val doToList = ToDoList(id = 69, title = titleInput, type = "Note", priority = radioBtnInput)
-                //val noteItem = NoteItem(id = 420, description = descriptionInput, deadline = deadlineInput,list = 69)
+                if(newID != 0.toLong()){
+                    if(newList != null){
+                        newList.title = titleInput
+                        newList.priority = radioBtnInput
+                        if(newNote!= null) {
+                            newNote.deadline = deadlineInput
+                            newNote.description = descriptionInput
+                            db.toDoListDao().update(newList)
+                            db.noteItemDao().update(newNote)
+                        }
+                    }
+                } else {
+                    val doToList = ToDoList(title = titleInput, type = "Note", priority = radioBtnInput)
+                    newID = db.toDoListDao().insert(doToList)
+                    val noteItem = NoteItem(description = descriptionInput, deadline = deadlineInput, list = newID.toInt())
+                    db.noteItemDao().insert(noteItem)
+                }
 
-                val doToList = ToDoList(title = titleInput, type = "Note", priority = radioBtnInput)
-                var newID = db.toDoListDao().insert(doToList)
-                val noteItem = NoteItem(description = descriptionInput, deadline = deadlineInput, list = newID.toInt())
-                db.noteItemDao().insert(noteItem)
                 //Log.i(db.toDoListDao().toDoList)
 
                 println(db.toDoListDao().toDoList)

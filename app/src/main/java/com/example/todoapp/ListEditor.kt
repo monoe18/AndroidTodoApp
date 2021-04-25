@@ -47,10 +47,8 @@ class ListEditor : AppCompatActivity() {
                 }
             }
         } else {
-            currentList = ToDoList(0, "kongen", "List", "hej")
+            currentList = ToDoList(0, "title", "List", "hej")
             newID =  db.toDoListDao().insert(currentList)
-
-
         }
 
         var recyclerView = findViewById<RecyclerView>(R.id.editorRecyclerView)
