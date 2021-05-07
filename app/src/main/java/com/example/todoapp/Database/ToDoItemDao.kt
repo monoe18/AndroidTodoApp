@@ -14,7 +14,7 @@ interface ToDoItemDao {
     fun update(toDoItem: ToDoItem?): Int
 
     @Insert
-    fun insert(toDoItem: ToDoItem?)
+    fun insert(toDoItem: ToDoItem?) : Long
 
     @Query("SELECT COUNT(*) FROM toDoItem")
     fun countToDoItem(): Int

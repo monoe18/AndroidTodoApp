@@ -14,7 +14,7 @@ interface NoteItemDao {
     fun update(noteItem: NoteItem?): Int
 
     @Insert
-    fun insert(noteItem: NoteItem?)
+    fun insert(noteItem: NoteItem?) : Long
 
     @Query("SELECT COUNT(*) from noteItem")
     fun countNoteItem(): Int
