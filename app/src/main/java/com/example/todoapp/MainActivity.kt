@@ -18,47 +18,54 @@ import com.example.todoapp.Database.ToDoList
 class MainActivity : AppCompatActivity(), OnItemClickListener {
     protected lateinit var db: ToDoDatabase
     protected lateinit var adapter : ListCollectionAdapter
+    protected var final_lists: ArrayList<ListTodo> = arrayListOf();
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         db = ToDoDatabase.getAppDatabase(this)!!
 
-        Log.i(null, "starting db calls");
 
-        var todo_lists = db.toDoListDao().getListInfo();
-        var final_lists: ArrayList<ListTodo> = arrayListOf();
 
-        for (list_tuple in todo_lists) {
-            if(list_tuple.type == "List") {
-                var list_items = db.toDoItemDao().getItemsFromList(list_tuple.id);
-                var todo_items: ArrayList<ItemTodo> = arrayListOf();
-                for(list_item in list_items){
-                    todo_items.add(ItemTodo(list_item.id, list_item.description, list_item.done))
-                }
-                final_lists.add(ListTodo(list_tuple.id, list_tuple.title, list_tuple.type, todo_items))
-            } else if (list_tuple.type == "Note") {
-                var note_item = db.noteItemDao().getNoteFromList(list_tuple.id);
-                //FIND BETTER WAY TO DISTINQUISH NOTES AND LISTS
-                var note_array : ArrayList<ItemTodo> = arrayListOf(ItemTodo(note_item?.id, note_item?.description, false ))
-                final_lists.add(ListTodo(list_tuple.id, list_tuple.title, list_tuple.type, note_array))
-            }
-        }
-
-        Log.i(null, "ending db calls");
-
-        for (list_to_print in  final_lists){
-            Log.i(null,"list: " + list_to_print.listTitle +", "+ list_to_print.listType +", "+ list_to_print.ID);
-            for(item_ in list_to_print.todoItems){
-                Log.i(null,"item: " + item_.title +", "+ item_.done +", "+ item_.id);
-            }
-        }
         adapter = ListCollectionAdapter(final_lists, this, this)
         var recyclerView = findViewById<RecyclerView>(R.id.recyclerList)
         recyclerView.setHasFixedSize(true)
         var layoutManager = StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL)
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
+
+        var getterThread : GetterThread = GetterThread()
+        getterThread.start()
+    }
+
+    inner class GetterThread : Thread() {
+        override fun run() {
+            Log.i(null, "starting db calls");
+
+            var todo_lists = db.toDoListDao().getListInfo();
+
+            for (list_tuple in todo_lists) {
+                if(list_tuple.type == "List") {
+                    var list_items = db.toDoItemDao().getItemsFromList(list_tuple.id);
+                    var todo_items: ArrayList<ItemTodo> = arrayListOf();
+                    for(list_item in list_items){
+                        todo_items.add(ItemTodo(list_item.id, list_item.description, list_item.done))
+                    }
+                    final_lists.add(ListTodo(list_tuple.id, list_tuple.title, list_tuple.type, todo_items))
+                    runOnUiThread(Runnable { adapter.notifyDataSetChanged() })
+                    Thread.sleep(200)
+                } else if (list_tuple.type == "Note") {
+                    var note_item = db.noteItemDao().getNoteFromList(list_tuple.id);
+                    //FIND BETTER WAY TO DISTINQUISH NOTES AND LISTS
+                    var note_array : ArrayList<ItemTodo> = arrayListOf(ItemTodo(note_item?.id, note_item?.description, false ))
+                    final_lists.add(ListTodo(list_tuple.id, list_tuple.title, list_tuple.type, note_array))
+                    runOnUiThread(Runnable { adapter.notifyDataSetChanged() })
+                    Thread.sleep(200)
+                }
+            }
+
+            Log.i(null, "ending db calls");
+        }
     }
     
     override fun onResume() {

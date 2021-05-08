@@ -95,19 +95,10 @@ class NoteEditor : AppCompatActivity() {
         if (bundle != null) {
             Log.i(null, "found Bundle")
             if (bundle.getInt("id") != null) {
-                newList = db.toDoListDao().listFromID(bundle.getInt("id"))
-                if (newList != null) {
-                    Title.setText(newList!!.title);
-                    newID = newList!!.id.toLong()
-                    newNote = db.noteItemDao().getNoteFromList(newID.toInt())
-                    if (newNote != null) {
-                        Description.setText(newNote!!.description)
-                        Deadline!!.text = newNote!!.deadline
-                    }
-                }
+                var getNoteThread :GetNoteThread = GetNoteThread(bundle)
+                getNoteThread.start()
             }
         }
-
 
         DeadlineDateListener = OnDateSetListener { datePicker, year, month, day ->
             var the_month = month
@@ -120,6 +111,22 @@ class NoteEditor : AppCompatActivity() {
         cancelBtn.setOnClickListener() {
             val i = Intent(applicationContext, MainActivity::class.java)
             startActivity(i)
+        }
+    }
+
+    inner class GetNoteThread(bundlearg: Bundle) : Thread() {
+        var bundle: Bundle = bundlearg
+        override fun run() {
+            newList = db.toDoListDao().listFromID(bundle.getInt("id"))
+            if (newList != null) {
+                Title.setText(newList!!.title);
+                newID = newList!!.id.toLong()
+                newNote = db.noteItemDao().getNoteFromList(newID.toInt())
+                if (newNote != null) {
+                    Description.setText(newNote!!.description)
+                    Deadline!!.text = newNote!!.deadline
+                }
+            }
         }
     }
 
