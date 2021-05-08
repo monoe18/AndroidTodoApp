@@ -1,5 +1,6 @@
 package com.example.todoapp.Database
 
+import android.database.Cursor
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -21,4 +22,7 @@ interface ToDoItemDao {
 
     @Query("SELECT * FROM toDoItem WHERE :list_id = list")
     fun getItemsFromList(list_id: Int?) : List<ToDoItemTuple>;
+
+    @Query("SELECT * FROM toDoItem WHERE :list_id = list")
+    fun getItemsFromListCursor(list_id: Int?) : Cursor;
 }

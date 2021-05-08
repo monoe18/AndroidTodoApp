@@ -84,17 +84,25 @@ class ContentProvider : ContentProvider(){
     ): Cursor? {
         var type = uriMatcher.match(uri)
         if (type == ITEMS){
-
+            var cursor : Cursor? = db?.toDoItemDao()?.getItemsFromListCursor(selectionArgs?.get(0)?.toInt())
+            return cursor;
         } else if (type == ITEMS_ID){
-
+            var cursor : Cursor? = db?.toDoItemDao()?.getItemsFromListCursor(selectionArgs?.get(0)?.toInt())
+            return cursor;
         } else if (type == NOTES){
-
+            var cursor : Cursor? = db?.noteItemDao()?.getNotesFromListCursor(selectionArgs?.get(0)?.toInt())
+            return cursor;
         } else if (type == NOTES_ID){
-
+            var cursor : Cursor? = db?.noteItemDao()?.getNotesFromListCursor(selectionArgs?.get(0)?.toInt())
+            return cursor;
         } else if (type == LISTS){
-
+            var cursor : Cursor? = db?.toDoListDao()?.getListsCursor()
+            return cursor;
         } else if (type == LISTS_ID){
-
+            var cursor : Cursor? = db?.toDoListDao()?.getListsCursor()
+            return cursor;
+        } else {
+            throw IllegalArgumentException("Unknown URI: $uri")
         }
     }
 
@@ -109,15 +117,15 @@ class ContentProvider : ContentProvider(){
         selection: String?,
         selectionArgs: Array<out String>?
     ): Int {
-        TODO("Not yet implemented")
+        TODO("Not Neccessary in widget use and shouldn't be allowed to be used")
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
-        TODO("Not yet implemented")
+        TODO("Not Neccessary in widget use and shouldn't be allowed to be used")
     }
 
     override fun getType(uri: Uri): String? {
-        TODO("Not yet implemented")
+        TODO("Not Neccessary in widget use and shouldn't be allowed to be used")
     }
 
 }
