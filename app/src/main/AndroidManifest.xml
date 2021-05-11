@@ -3,6 +3,7 @@
     package="com.example.todoapp">
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="com.example.todoapp.Provider.READ" />
 
     <application
         android:allowBackup="true"
@@ -23,6 +24,7 @@
         <provider android:name=".Provider.ContentProvider"
             android:authorities=
                 "com.example.todoapp.Provider.ContentProvider"
+            android:readPermission="com.example.todoapp.Provider.READ"
             android:enabled="true"
             android:exported="true" >
         </provider>
