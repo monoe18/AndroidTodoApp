@@ -34,21 +34,12 @@ class ListEditor : AppCompatActivity() {
         var bundle: Bundle? = intent.extras
         if (bundle != null) {
             if (bundle.getInt("id") != null) {
-                var newList: ToDoList? = db.toDoListDao().listFromID(bundle.getInt("id"))
-                if (newList != null) {
-                    findViewById<EditText>(R.id.titleToAdd).setText(newList.title)
-                    newID = newList.id.toLong()
-                    var list_items = db.toDoItemDao().getItemsFromList(newID.toInt());
-
-                    for(list_item in list_items){
-                        todo_items.add(ItemTodo(list_item.id, list_item.description, list_item.done))
-                    }
-
-                }
+                var getListThread : GetListThread = GetListThread(bundle)
+                getListThread.start()
             }
         } else {
-            currentList = ToDoList(0, "title", "List", "hej")
-            newID =  db.toDoListDao().insert(currentList)
+            var insertListThread : InsertListThread = InsertListThread()
+            insertListThread.start()
         }
 
         var recyclerView = findViewById<RecyclerView>(R.id.editorRecyclerView)
@@ -62,20 +53,52 @@ class ListEditor : AppCompatActivity() {
         Log.i(null, "ID" + newID)
     }
 
-    fun insertItem(view: View) {
-        var editTextField = findViewById<EditText>(R.id.textToAdd)
-        val newItem = ItemTodo(0,editTextField.text.toString(), false)
-        var editTitleField = findViewById<EditText>(R.id.titleToAdd)
-        todo_items.add(newItem)
 
-        db.toDoItemDao().insert(ToDoItem(0, false, editTextField.text.toString(), newID.toInt() ))
-        var newTitleList: ToDoList? = db.toDoListDao().listFromID(newID.toInt())
-        if (newTitleList != null) {
-            newTitleList.title = editTitleField.text.toString()
-            db.toDoListDao().update(newTitleList)
-        }
-        editTextField.text.clear();
+    fun insertItem(view: View) {
+        var insertThread : InsertThread = InsertThread()
+        insertThread.start()
 
         adapter.notifyDataSetChanged()
+    }
+
+    inner class InsertThread : Thread() {
+        override fun run() {
+            var editTextField = findViewById<EditText>(R.id.textToAdd)
+            val newItem = ItemTodo(0,editTextField.text.toString(), false)
+            var editTitleField = findViewById<EditText>(R.id.titleToAdd)
+            todo_items.add(newItem)
+
+            db.toDoItemDao().insert(ToDoItem(0, false, editTextField.text.toString(), newID.toInt() ))
+            var newTitleList: ToDoList? = db.toDoListDao().listFromID(newID.toInt())
+            if (newTitleList != null) {
+                newTitleList.title = editTitleField.text.toString()
+                db.toDoListDao().update(newTitleList)
+            }
+            editTextField.text.clear();
+        }
+    }
+
+    inner class GetListThread(bundlearg: Bundle) : Thread() {
+        var bundle = bundlearg
+        override fun run() {
+            var newList: ToDoList? = db.toDoListDao().listFromID(bundle.getInt("id"))
+            if (newList != null) {
+                findViewById<EditText>(R.id.titleToAdd).setText(newList.title)
+                newID = newList.id.toLong()
+                var list_items = db.toDoItemDao().getItemsFromList(newID.toInt());
+
+                for(list_item in list_items){
+                    todo_items.add(ItemTodo(list_item.id, list_item.description, list_item.done))
+                }
+            }
+        }
+
+    }
+    inner class InsertListThread() : Thread() {
+        override fun run() {
+            currentList = ToDoList(0, "title", "List", "hej")
+            newID =  db.toDoListDao().insert(currentList)
+        }
+
     }
 }

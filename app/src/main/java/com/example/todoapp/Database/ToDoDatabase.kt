@@ -20,7 +20,7 @@ abstract class ToDoDatabase : RoomDatabase() {
                 INSTANCE = Room.databaseBuilder(context.applicationContext, ToDoDatabase::class.java, "ToDoDatabase")
                     // Allow queries on the main thread.
                     // Don't do this on a real app!
-                    .allowMainThreadQueries()
+                    //.allowMainThreadQueries()
                     .build()
             }
             return INSTANCE
