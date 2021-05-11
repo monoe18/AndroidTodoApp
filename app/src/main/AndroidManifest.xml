@@ -20,6 +20,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <provider android:name=".Provider.ContentProvider"
+            android:authorities=
+                "com.example.todoapp.Provider.ContentProvider"
+            android:enabled="true"
+            android:exported="true" >
+        </provider>
         <receiver android:name=".WidgetProvider">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />

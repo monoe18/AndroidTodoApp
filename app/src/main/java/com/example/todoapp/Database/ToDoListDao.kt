@@ -1,5 +1,6 @@
 package com.example.todoapp.Database
 
+import android.database.Cursor
 import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.Query
@@ -25,5 +26,8 @@ import androidx.room.Update
 
         @Query("SELECT * FROM toDoList WHERE :list_id = id")
         fun listFromID(list_id: Int?): ToDoList?
+
+        @Query("SELECT * FROM todolist")
+        fun getListsCursor() : Cursor;
     }
 
