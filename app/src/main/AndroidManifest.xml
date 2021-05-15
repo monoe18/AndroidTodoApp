@@ -37,6 +37,8 @@
                 android:resource="@xml/app_widget_info" />
 
         </receiver>
+        <service android:name=".WidgetListService"
+            android:permission="android.permission.BIND_REMOTEVIEWS"/>
     </application>
 
 </manifest>
