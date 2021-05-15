@@ -14,27 +14,17 @@ import android.widget.SimpleCursorAdapter
 import androidx.recyclerview.widget.RecyclerView
 
 class WidgetProvider : AppWidgetProvider() {
-
-
-
-
-
-
     override fun onUpdate(
         context: Context?,
         appWidgetManager: AppWidgetManager?,
         appWidgetIds: IntArray?
     ) {
-
-
-
         super.onUpdate(context, appWidgetManager, appWidgetIds)
 
         var listView : RemoteViews = RemoteViews(context?.packageName, R.layout.activity_widget)
         val intent = Intent(context,WidgetListService::class.java)
         listView.setRemoteAdapter(R.id.widget_listView, intent)
-
-
+        appWidgetManager?.updateAppWidget(appWidgetIds,listView)
 
         //   if (appWidgetIds != null) {
      //       for (appWidgetId in appWidgetIds) {

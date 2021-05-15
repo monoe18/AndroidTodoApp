@@ -60,7 +60,6 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
                     var note_array : ArrayList<ItemTodo> = arrayListOf(ItemTodo(note_item?.id, note_item?.description, false ))
                     final_lists.add(ListTodo(list_tuple.id, list_tuple.title, list_tuple.type, note_array))
                     runOnUiThread(Runnable { adapter.notifyDataSetChanged() })
-                    Thread.sleep(200)
                 }
             }
 

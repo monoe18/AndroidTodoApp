@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.Intent
 import android.database.Cursor
 import android.net.Uri
+import android.util.Log
 import android.widget.RemoteViews
 import android.widget.RemoteViewsService
 import android.widget.SimpleCursorAdapter
@@ -35,18 +36,15 @@ class WidgetListService: RemoteViewsService() {
         )
 
         fun initCursor() {
-            cursor = context?.contentResolver?.query(
-                uri,
-                mProjection,
-                selectionClause,
-                selectionArgs,
-                null)
+            var cursorGetter : getCursor = getCursor()
+            cursorGetter.start()
+            Log.i(null, cursor.toString() + " cursor")
         }
 
 
 
         override fun onCreate() {
-            TODO("Not yet implemented")
+            initCursor()
         }
 
         override fun getLoadingView(): RemoteViews? {
@@ -73,7 +71,8 @@ class WidgetListService: RemoteViewsService() {
         }
 
         override fun getCount(): Int {
-            TODO("Not yet implemented")
+            var count : Int = cursor?.count!!
+            return count
         }
 
         override fun getViewTypeCount(): Int {
@@ -81,8 +80,20 @@ class WidgetListService: RemoteViewsService() {
         }
 
         override fun onDestroy() {
-            TODO("Not yet implemented")
+            cursor?.close()
         }
+
+        inner class getCursor : Thread() {
+            override fun run() {
+                cursor = context?.contentResolver?.query(
+                    uri,
+                    mProjection,
+                    selectionClause,
+                    selectionArgs,
+                    null)
+            }
+        }
+
 
     }
 
