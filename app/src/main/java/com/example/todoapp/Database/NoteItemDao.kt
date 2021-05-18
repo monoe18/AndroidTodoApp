@@ -1,10 +1,8 @@
 package com.example.todoapp.Database
 
 import android.database.Cursor
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
+
 
 @Dao
 interface NoteItemDao {
@@ -26,4 +24,10 @@ interface NoteItemDao {
 
     @Query("SELECT * FROM noteItem WHERE :list_id = list")
     fun getNotesFromListCursor(list_id: Int?) : Cursor;
+
+    @Query("DELETE FROM noteItem WHERE :list_id = list")
+    fun delete(list_id: Int?) : Int
+
+    //@Delete
+    //fun delete(list_id: Int?)
 }

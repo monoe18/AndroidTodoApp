@@ -1,5 +1,6 @@
 package com.example.todoapp
 
+import android.app.AlertDialog
 import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.content.Intent
@@ -27,25 +28,16 @@ class NoteEditor : AppCompatActivity() {
     private lateinit var Priority_RadioBtn: RadioButton
     private lateinit var addNoteBtn: Button
     private lateinit var cancelBtn: Button
+    private lateinit var deleteBtn: Button
     private var Deadline: TextView? = null
     private var DeadlineDateListener: OnDateSetListener? = null
     private lateinit var mainhandler: Handler
     var newID: Long = 0
     var newList: ToDoList? = ToDoList(0, "", "", "")
     var newNote: NoteItem? = NoteItem(0, "", "", 0)
-
-
     @Volatile
     var running = true
 
-    /**
-    var handlerobject: Handler = object : Handler() {
-    override fun handleMessage(msg: Message) {
-    super.handleMessage(msg)
-    println("The background thread is complete.")
-    }
-    }
-     */
     private class MyHandler(activity: NoteEditor?) : Handler() {
         private val mActivity: WeakReference<NoteEditor>
         override fun handleMessage(msg: Message) {
@@ -73,6 +65,7 @@ class NoteEditor : AppCompatActivity() {
         RadioGroup = findViewById(R.id.radioGroup)
         addNoteBtn = findViewById<Button>(R.id.button)
         cancelBtn = findViewById<Button>(R.id.button3)
+        deleteBtn = findViewById(R.id.button6)
 
         Deadline!!.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -95,6 +88,7 @@ class NoteEditor : AppCompatActivity() {
         if (bundle != null) {
             Log.i(null, "found Bundle")
             if (bundle.getInt("id") != null) {
+
                 var getNoteThread :GetNoteThread = GetNoteThread(bundle)
                 getNoteThread.start()
             }
@@ -108,15 +102,37 @@ class NoteEditor : AppCompatActivity() {
             Deadline!!.text = theDate
         }
 
-        cancelBtn.setOnClickListener() {
-            val i = Intent(applicationContext, MainActivity::class.java)
-            startActivity(i)
-        }
+
+
     }
 
+    fun deleteFunction(view: View){
+        var checkDeletion : Boolean = false
+        var bundle : Bundle? = intent.extras
+        newList = db.toDoListDao().listFromID(bundle!!.getInt("id"))
+        newID = newList!!.id.toLong()
+
+        if(newList != null && newID != null){
+            db.toDoListDao().delete(newID.toInt())
+            db.noteItemDao().delete(newID.toInt())
+            checkDeletion = true
+            if(checkDeletion){
+                println("Deletion of data has been completed.")
+            }
+        }
+        val i = Intent(applicationContext, MainActivity::class.java)
+        startActivity(i)
+    }
+
+    fun cancel (view: View){
+        val i = Intent(applicationContext, MainActivity::class.java)
+        startActivity(i)
+
+    }
     inner class GetNoteThread(bundlearg: Bundle) : Thread() {
         var bundle: Bundle = bundlearg
         override fun run() {
+            deleteBtn.visibility = View.VISIBLE
             newList = db.toDoListDao().listFromID(bundle.getInt("id"))
             if (newList != null) {
                 Title.setText(newList!!.title);
@@ -125,6 +141,9 @@ class NoteEditor : AppCompatActivity() {
                 if (newNote != null) {
                     Description.setText(newNote!!.description)
                     Deadline!!.text = newNote!!.deadline
+                    if(Priority_RadioBtn.isChecked) {
+                        RadioGroup.checkedRadioButtonId
+                    }
                 }
             }
         }
@@ -159,7 +178,6 @@ class NoteEditor : AppCompatActivity() {
 
     fun addNote() {
 
-        //addNoteBtn.setOnClickListener {
         val intSelectionBtn: Int = RadioGroup!!.checkedRadioButtonId
         Priority_RadioBtn = findViewById(intSelectionBtn)
 
@@ -202,44 +220,8 @@ class NoteEditor : AppCompatActivity() {
         }
         val i = Intent(applicationContext, MainActivity::class.java)
         startActivity(i)
-        //}
-
-
     }
 
-
-    /**
-    class ExampleRunnable(var seconds: Int) : Runnable {
-    override fun run() {
-    val threadHandler = Handler(Looper.getMainLooper())
-    for (i in 0..seconds) {
-    Log.d("NoteEditor", "activateThread: $i")
-    if (i == 5) {
-
-    threadHandler?.post {
-    addNoteBtn.text = "50%"
-    }
-    }
-    if (i == 10) {
-    threadHandler.post{
-    createNote()
-    }
-    }
-
-    try {
-    Thread.sleep(1000)
-    } catch (e: InterruptedException) {
-    e.printStackTrace()
-    }
-    }
-    }*/
-
-/*
-    fun activateThread(view: View) {
-        val runnable = ExampleRunnable(10)
-        Thread(runnable).start()
-    }
-*/
     fun threadStops() {
         running = false
         println("The Thread has stopped!!!")

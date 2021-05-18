@@ -1,12 +1,10 @@
 package com.example.todoapp.Database
 
 import android.database.Cursor
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.Query
-import androidx.room.Update
+import androidx.room.*
 
-    @Dao
+
+@Dao
     interface ToDoListDao {
         @get:Query("SELECT * FROM toDoList")
         val toDoList: ToDoList?
@@ -16,7 +14,6 @@ import androidx.room.Update
 
         @Insert
         fun insert(toDoList: ToDoList?): Long
-
 
         @Query("SELECT COUNT(*) from toDoList")
         fun countToDoList(): Int
@@ -29,5 +26,11 @@ import androidx.room.Update
 
         @Query("SELECT * FROM todolist")
         fun getListsCursor() : Cursor;
+
+        @Query("DELETE FROM toDoList WHERE :list_id = id")
+        fun delete(list_id: Int?): Int
+
+        //@Delete
+        //fun delete(list_id: Int?)
     }
 

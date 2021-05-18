@@ -5,10 +5,7 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
-import com.example.todoapp.Database.NoteItem
-import com.example.todoapp.Database.ToDoDatabase
-import com.example.todoapp.Database.ToDoItem
-import com.example.todoapp.Database.ToDoList
+import com.example.todoapp.Database.*
 
 class ContentProvider : ContentProvider(){
     private val ITEMS = 1
@@ -122,6 +119,29 @@ class ContentProvider : ContentProvider(){
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
         TODO("Not Neccessary in widget use and shouldn't be allowed to be used")
+        val type = uriMatcher.match(uri)
+
+        if(type == ITEMS){
+            var note : Int = db!!.toDoItemDao()!!.delete(selectionArgs?.get(0)?.toInt())
+            return note
+        } else if(type == ITEMS_ID){
+            var note : Int = db!!.toDoItemDao()!!.delete(selectionArgs?.get(0)?.toInt())
+            return note
+        } else if(type == NOTES){
+            var note : Int = db!!.noteItemDao()!!.delete(selectionArgs?.get(0)?.toInt())
+            return note
+        } else if (type == NOTES_ID){
+            var note : Int = db!!.noteItemDao()!!.delete(selectionArgs?.get(0)?.toInt())
+            return note
+        } else if (type == LISTS){
+            var note : Int = db!!.toDoListDao()!!.delete(selectionArgs?.get(0)?.toInt())
+            return note
+        } else if (type == LISTS_ID){
+            var note : Int = db!!.toDoListDao()!!.delete(selectionArgs?.get(0)?.toInt())
+            return note
+        } else {
+            throw IllegalArgumentException("Unknown URI: $uri")
+        }
     }
 
     override fun getType(uri: Uri): String? {
