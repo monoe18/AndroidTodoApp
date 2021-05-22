@@ -117,15 +117,15 @@ class ContentProvider : ContentProvider(){
         selection: String?,
         selectionArgs: Array<out String>?
     ): Int {
-        TODO("Not Neccessary in widget use and shouldn't be allowed to be used")
+        TODO("Not Neccessary in our widget and shouldn't be allowed to be used by any external services")
     }
 
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
-        TODO("Not Neccessary in widget use and shouldn't be allowed to be used")
+        TODO("Not Neccessary in our widget and shouldn't be allowed to be used by any external services")
     }
 
     override fun getType(uri: Uri): String? {
-        TODO("Not Neccessary in widget use and shouldn't be allowed to be used")
+        TODO("Not Neccessary in our widget and shouldn't be allowed to be used by any external services")
     }
 
 }

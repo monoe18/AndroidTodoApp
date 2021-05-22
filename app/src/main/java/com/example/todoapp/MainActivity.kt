@@ -20,6 +20,8 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
     protected lateinit var adapter : ListCollectionAdapter
     protected var final_lists: ArrayList<ListTodo> = arrayListOf();
 
+    var getterThread : GetterThread = GetterThread()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -34,14 +36,12 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         recyclerView.layoutManager = layoutManager
         recyclerView.adapter = adapter
 
-        var getterThread : GetterThread = GetterThread()
         getterThread.start()
     }
 
     inner class GetterThread : Thread() {
         override fun run() {
             Log.i(null, "starting db calls");
-
             var todo_lists = db.toDoListDao().getListInfo();
 
             for (list_tuple in todo_lists) {
@@ -68,7 +68,11 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
     }
     
     override fun onResume() {
-        adapter.notifyDataSetChanged();
+        if (!getterThread.isAlive){
+            final_lists.clear()
+            var getterThread : GetterThread = GetterThread()
+            getterThread.start()
+        }
         super.onResume()
     }
 
