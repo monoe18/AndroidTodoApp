@@ -200,9 +200,9 @@ class NoteEditor : AppCompatActivity() {
             println(db.noteItemDao().noteItem)
 
         }
-        val i = Intent(applicationContext, MainActivity::class.java)
-        startActivity(i)
-        //}
+        //val i = Intent(applicationContext, MainActivity::class.java)
+        //startActivity(i)
+        finish();
 
 
     }
