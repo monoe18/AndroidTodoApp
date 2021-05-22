@@ -15,15 +15,18 @@ class WidgetListService: RemoteViewsService() {
     }
 
     inner class WidgetListServiceFactory(context: Context, intent: Intent?) : RemoteViewsFactory {
-        var context : Context = context;
-        var cursor : Cursor? = null;
-        var uri : Uri = Uri.parse("content://com.example.todoapp.Provider.ContentProvider/toDoList")
+        var context: Context = context;
+        var cursor: Cursor? = null;
+        var  listcount : Int = 0;
+        var uri: Uri = Uri.parse("content://com.example.todoapp.Provider.ContentProvider/toDoList")
         private val mProjection: Array<String> = arrayOf(
-            "id", "title", "type", "priority")
+            "id", "title", "type", "priority"
+        )
 
         private var selectionClause: String? = null
 
         private var selectionArgs = null
+        var cursorGetter: getCursor = getCursor()
 
         val TodoListTitle = intArrayOf(R.id.textView3)
         var cursorAdapter = SimpleCursorAdapter(
@@ -36,15 +39,13 @@ class WidgetListService: RemoteViewsService() {
         )
 
         fun initCursor() {
-            var cursorGetter : getCursor = getCursor()
             cursorGetter.start()
             Log.i(null, cursor.toString() + " cursor")
         }
 
 
-
         override fun onCreate() {
-            initCursor()
+
         }
 
         override fun getLoadingView(): RemoteViews? {
@@ -64,15 +65,17 @@ class WidgetListService: RemoteViewsService() {
         }
 
         override fun getViewAt(position: Int): RemoteViews {
-            var rv : RemoteViews = RemoteViews(context.packageName, R.layout.activity_widget_list_holder)
+            var rv: RemoteViews =
+                RemoteViews(context.packageName, R.layout.activity_widget_list_holder)
             cursor?.moveToPosition(position)
             rv.setTextViewText(R.id.textView3, cursor?.getString(1))
             return rv;
         }
 
         override fun getCount(): Int {
-            var count : Int = cursor?.count!!
-            return count
+            cursorGetter.join()
+            listcount = cursor?.count!!;
+            return listcount;
         }
 
         override fun getViewTypeCount(): Int {
@@ -90,11 +93,10 @@ class WidgetListService: RemoteViewsService() {
                     mProjection,
                     selectionClause,
                     selectionArgs,
-                    null)
+                    null
+                )
             }
         }
 
-
     }
-
 }
