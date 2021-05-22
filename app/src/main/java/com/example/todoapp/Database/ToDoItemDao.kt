@@ -25,4 +25,5 @@ interface ToDoItemDao {
 
     @Query("SELECT * FROM toDoItem WHERE :list_id = list")
     fun getItemsFromListCursor(list_id: Int?) : Cursor;
+
 }

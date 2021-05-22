@@ -29,5 +29,8 @@ import androidx.room.Update
 
         @Query("SELECT * FROM todolist")
         fun getListsCursor() : Cursor;
+
+        @Query("DELETE FROM toDoList WHERE :list_id = id")
+        fun delete(list_id: Int?): Int
     }
 

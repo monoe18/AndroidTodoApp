@@ -27,13 +27,13 @@ class NoteEditor : AppCompatActivity() {
     private lateinit var Priority_RadioBtn: RadioButton
     private lateinit var addNoteBtn: Button
     private lateinit var cancelBtn: Button
+    private lateinit var deleteBtn : Button
     private var Deadline: TextView? = null
     private var DeadlineDateListener: OnDateSetListener? = null
     private lateinit var mainhandler: Handler
     var newID: Long = 0
     var newList: ToDoList? = ToDoList(0, "", "", "")
     var newNote: NoteItem? = NoteItem(0, "", "", 0)
-
 
     @Volatile
     var running = true
@@ -73,6 +73,7 @@ class NoteEditor : AppCompatActivity() {
         RadioGroup = findViewById(R.id.radioGroup)
         addNoteBtn = findViewById<Button>(R.id.button)
         cancelBtn = findViewById<Button>(R.id.button3)
+        deleteBtn = findViewById(R.id.button2)
 
         Deadline!!.setOnClickListener {
             val calendar = Calendar.getInstance()
@@ -98,6 +99,10 @@ class NoteEditor : AppCompatActivity() {
                 var getNoteThread :GetNoteThread = GetNoteThread(bundle)
                 getNoteThread.start()
             }
+            deleteBtn.setOnClickListener(){
+                var deleteNoteThread : DeleteNoteThread = DeleteNoteThread(bundle)
+                deleteNoteThread.start()
+            }
         }
 
         DeadlineDateListener = OnDateSetListener { datePicker, year, month, day ->
@@ -111,6 +116,20 @@ class NoteEditor : AppCompatActivity() {
         cancelBtn.setOnClickListener() {
             val i = Intent(applicationContext, MainActivity::class.java)
             startActivity(i)
+        }
+
+
+    }
+
+    inner class DeleteNoteThread(bundleinfo: Bundle) : Thread(){
+        var bundle: Bundle = bundleinfo
+        override fun run() {
+            newList = db.toDoListDao().listFromID(bundle.getInt("id"))
+            newID = newList!!.id.toLong()
+            if(newID != null && newList != null) {
+                db.toDoListDao().delete(newID.toInt())
+                db.noteItemDao().delete(newID.toInt())
+            }
         }
     }
 
