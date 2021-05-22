@@ -26,4 +26,7 @@ interface NoteItemDao {
 
     @Query("SELECT * FROM noteItem WHERE :list_id = list")
     fun getNotesFromListCursor(list_id: Int?) : Cursor;
+
+    @Query("DELETE FROM noteItem WHERE :list_id = list")
+    fun delete(list_id: Int?): Int
 }
