@@ -130,6 +130,8 @@ class NoteEditor : AppCompatActivity() {
                 db.toDoListDao().delete(newID.toInt())
                 db.noteItemDao().delete(newID.toInt())
             }
+            val i = Intent(applicationContext, MainActivity::class.java)
+            startActivity(i)
         }
     }
 
@@ -144,6 +146,7 @@ class NoteEditor : AppCompatActivity() {
                 if (newNote != null) {
                     Description.setText(newNote!!.description)
                     Deadline!!.text = newNote!!.deadline
+                    RadioGroup!!.checkedRadioButtonId
                 }
             }
         }
