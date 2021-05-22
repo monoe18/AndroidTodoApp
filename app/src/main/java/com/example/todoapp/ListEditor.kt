@@ -1,17 +1,19 @@
 package com.example.todoapp
 
-import androidx.appcompat.app.AppCompatActivity
+import android.content.DialogInterface
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.EditText
-import android.widget.RadioGroup
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.todoapp.Database.ToDoDatabase
 import com.example.todoapp.Database.ToDoItem
 import com.example.todoapp.Database.ToDoList
+
 
 class ListEditor : AppCompatActivity() {
 
@@ -64,11 +66,18 @@ class ListEditor : AppCompatActivity() {
     inner class InsertThread : Thread() {
         override fun run() {
             var editTextField = findViewById<EditText>(R.id.textToAdd)
-            val newItem = ItemTodo(0,editTextField.text.toString(), false)
+            val newItem = ItemTodo(0, editTextField.text.toString(), false)
             var editTitleField = findViewById<EditText>(R.id.titleToAdd)
             todo_items.add(newItem)
 
-            db.toDoItemDao().insert(ToDoItem(0, false, editTextField.text.toString(), newID.toInt() ))
+            db.toDoItemDao().insert(
+                ToDoItem(
+                    0,
+                    false,
+                    editTextField.text.toString(),
+                    newID.toInt()
+                )
+            )
             var newTitleList: ToDoList? = db.toDoListDao().listFromID(newID.toInt())
             if (newTitleList != null) {
                 newTitleList.title = editTitleField.text.toString()
@@ -101,4 +110,25 @@ class ListEditor : AppCompatActivity() {
         }
 
     }
-}
+
+    inner class DeleteListThread() : Thread() {
+        override fun run() {
+            db.toDoListDao().delete(newID.toInt())
+        }}
+
+
+    fun deleteListFunction(view: View) {
+        var deleteListThread: DeleteListThread = DeleteListThread()
+        val builder = AlertDialog.Builder(this)
+
+            builder.setTitle("Delete ?")
+            builder.setMessage("Are you sure you want to delete?")
+                builder.setPositiveButton("Yes") { dialog, which ->
+                    deleteListThread.start()
+                    finish()}
+
+
+            builder.create().show()
+
+        }
+    }

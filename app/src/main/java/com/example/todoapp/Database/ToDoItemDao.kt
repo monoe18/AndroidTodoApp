@@ -23,6 +23,9 @@ interface ToDoItemDao {
     @Query("SELECT * FROM toDoItem WHERE :list_id = list")
     fun getItemsFromList(list_id: Int?) : List<ToDoItemTuple>;
 
+    @Query("DELETE FROM toDoItem WHERE :list_id = list")
+    fun delete(list_id: Int?): Int
+
     @Query("SELECT * FROM toDoItem WHERE :list_id = list")
     fun getItemsFromListCursor(list_id: Int?) : Cursor;
 }
