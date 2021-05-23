@@ -146,9 +146,15 @@ class NoteEditor : AppCompatActivity() {
                 if (newNote != null) {
                     description.setText(newNote!!.description)
                     deadline!!.text = newNote!!.deadline
-
+                    if(newList!!.priority == "High"){
+                        radioGroup!!.check(R.id.radioButton)
+                    }else if(newList!!.priority == "Medium"){
+                        radioGroup!!.check(R.id.radioButton3)
+                    }else if(newList!!.priority == "Low") {
+                        radioGroup!!.check(R.id.radioButton2)
                     }
                 }
+            }
 
         }
     }
