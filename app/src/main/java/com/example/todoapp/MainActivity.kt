@@ -27,8 +27,6 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         setContentView(R.layout.activity_main)
         db = ToDoDatabase.getAppDatabase(this)!!
 
-
-
         adapter = ListCollectionAdapter(final_lists, this, this)
         var recyclerView = findViewById<RecyclerView>(R.id.recyclerList)
         recyclerView.setHasFixedSize(true)
@@ -56,7 +54,7 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
                     Thread.sleep(200)
                 } else if (list_tuple.type == "Note") {
                     var note_item = db.noteItemDao().getNoteFromList(list_tuple.id);
-                    //FIND BETTER WAY TO DISTINQUISH NOTES AND LISTS
+
                     var note_array : ArrayList<ItemTodo> = arrayListOf(ItemTodo(note_item?.id, note_item?.description, false ))
                     final_lists.add(ListTodo(list_tuple.id, list_tuple.title, list_tuple.type, note_array))
                     runOnUiThread(Runnable { adapter.notifyDataSetChanged() })
@@ -84,16 +82,11 @@ class MainActivity : AppCompatActivity(), OnItemClickListener {
         AlertDialog.Builder(this)
             .setTitle("Todo Type")
             .setMessage("Would you like to make a note or a list?")
-            // Specifying a listener allows you to take an action before dismissing the dialog.
-            // The dialog is automatically dismissed when a dialog button is clicked.
             .setPositiveButton("List") { dialog, which ->
-                // Continue with delete operation
                 val intent = Intent(this, ListEditor::class.java).apply {}
                 startActivity(intent)
-
-            } // A null listener allows the button to dismiss the dialog and take no further action.
+            }
             .setNegativeButton("Note"){ dialog, which ->
-                // Continue with delete operation
                 val intent = Intent(this, NoteEditor::class.java).apply {}
                 startActivity(intent)
             }

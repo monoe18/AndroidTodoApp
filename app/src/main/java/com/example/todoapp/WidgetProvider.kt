@@ -18,7 +18,7 @@ class WidgetProvider : AppWidgetProvider() {
         context: Context?,
         appWidgetManager: AppWidgetManager?,
         appWidgetIds: IntArray?
-    ) {
+    ){
         super.onUpdate(context, appWidgetManager, appWidgetIds)
 
         var listView : RemoteViews = RemoteViews(context?.packageName, R.layout.activity_widget)
@@ -26,14 +26,7 @@ class WidgetProvider : AppWidgetProvider() {
         listView.setRemoteAdapter(R.id.widget_listView, intent)
         appWidgetManager?.updateAppWidget(appWidgetIds,listView)
 
-        //   if (appWidgetIds != null) {
-     //       for (appWidgetId in appWidgetIds) {
-     //           val intent = Intent(context, MainActivity::class.java)
-     //           val pendingIntent = PendingIntent.getActivity(context, 0, intent, 0)
-     //           val views = RemoteViews(context?.getPackageName(), R.layout.activity_widget)
-     //           if (appWidgetManager != null) {
-     //               appWidgetManager.updateAppWidget(appWidgetId, views)
-                }
+    }
 
 }
 

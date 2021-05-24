@@ -5,7 +5,7 @@
     android:id="@+id/deleteListButton"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:onClick="deleteListFunction"
+
     tools:context=".ListEditor">
 
     <Button
@@ -64,6 +64,7 @@
         android:layout_marginEnd="16dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@android:drawable/ic_menu_delete" />
+        app:srcCompat="@android:drawable/ic_menu_delete"
+        android:onClick="deleteListFunction"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

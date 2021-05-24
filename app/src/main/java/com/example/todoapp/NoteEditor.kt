@@ -66,7 +66,6 @@ class NoteEditor : AppCompatActivity() {
         addNoteButton = findViewById<Button>(R.id.button)
         cancelButton = findViewById<Button>(R.id.button3)
 
-
         deadline!!.setOnClickListener {
             val calendar = Calendar.getInstance()
             val year = calendar[Calendar.YEAR]
@@ -105,8 +104,7 @@ class NoteEditor : AppCompatActivity() {
         }
 
         cancelButton.setOnClickListener() {
-            val i = Intent(applicationContext, MainActivity::class.java)
-            startActivity(i)
+            finish()
         }
 
 
@@ -119,6 +117,8 @@ class NoteEditor : AppCompatActivity() {
                 var deleteNoteThread : DeleteNoteThread = DeleteNoteThread(bundle)
                 deleteNoteThread.start() }
         }
+
+        finish()
     }
 
     inner class DeleteNoteThread(bundleinfo: Bundle?) : Thread(){
@@ -130,8 +130,6 @@ class NoteEditor : AppCompatActivity() {
                 db.toDoListDao().delete(newID.toInt())
                 db.noteItemDao().delete(newID.toInt())
             }
-            val i = Intent(applicationContext, MainActivity::class.java)
-            startActivity(i)
         }
     }
 
@@ -187,8 +185,6 @@ class NoteEditor : AppCompatActivity() {
     }
 
     fun addNote() {
-
-        //addNoteBtn.setOnClickListener {
         val intSelectionBtn: Int = radioGroup!!.checkedRadioButtonId
         priorityButton = findViewById(intSelectionBtn)
 
@@ -229,11 +225,7 @@ class NoteEditor : AppCompatActivity() {
             println(db.noteItemDao().noteItem)
 
         }
-        //val i = Intent(applicationContext, MainActivity::class.java)
-        //startActivity(i)
         finish();
-
-
     }
 
     fun threadStops() {

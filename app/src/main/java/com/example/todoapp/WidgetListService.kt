@@ -30,12 +30,12 @@ class WidgetListService: RemoteViewsService() {
 
         val TodoListTitle = intArrayOf(R.id.textView3)
         var cursorAdapter = SimpleCursorAdapter(
-            context,                                        // The application's Context object
-            R.layout.activity_widget_list_holder,           // A layout in XML for one row in the ListView
-            cursor,                                         // The result from the query
-            mProjection,                                    // A string array of column names in the cursor
-            TodoListTitle,                                  // An integer array of view IDs in the row layout
-            0                                         // Flags (usually none are needed)
+            context,
+            R.layout.activity_widget_list_holder,
+            cursor,
+            mProjection,
+            TodoListTitle,
+            0
         )
 
         fun initCursor() {
